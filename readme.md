@@ -1,4 +1,4 @@
-# Enterprise Lab — pfSense + Ubuntu (GLPI & Zabbix) + Windows Host
+# Enterprise Lab simulation:
 
 **Author:** CBDEVSEC
 **Date:** 2025-10-03
