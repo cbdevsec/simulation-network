@@ -10,7 +10,7 @@
 
 This README is written as a runbook and technical reference intended for GitHub. It includes exact commands, configuration files, rationale for each step, validation tests, and troubleshooting notes.
 
----
+
 
 ## Table of Contents
 1. Overview & Topology
@@ -28,13 +28,13 @@ This README is written as a runbook and technical reference intended for GitHub.
 13. Automation snippets & useful scripts
 14. Appendix: config files and snippets
 
----
+
 
 ## 1. Overview & Topology
 
 This lab simulates a small enterprise network. It is intentionally compact (to run on machines with limited RAM) but maintains realistic separation of responsibilities.
 
-```
+
                       Internet
                          │
                      (VMnet0 / Bridged)
@@ -55,7 +55,7 @@ This lab simulates a small enterprise network. It is intentionally compact (to r
 
 > Note: In this lab we place all VMs on the same subnet for simplicity (`192.168.1.0/24`). In a more complex build you would separate Users/Servers into different subnets and use VLANs.
 
----
+
 
 ## 2. Prerequisites
 
@@ -76,7 +76,7 @@ This lab simulates a small enterprise network. It is intentionally compact (to r
 - Basic Linux command line and systemd service management.
 - Basic pfSense GUI familiarity (Interfaces, Firewall rules, DHCP, NAT).
 
----
+
 
 ## 3. VMware virtual network setup (VMnet)
 
@@ -97,7 +97,7 @@ This lab simulates a small enterprise network. It is intentionally compact (to r
 
 **Tip:** Use `Replicate physical network connection state` for bridged NIC to avoid issues when switching physical connections.
 
----
+
 
 ## 4. pfSense — VM creation & full configuration
 
@@ -159,7 +159,7 @@ From a machine on the LAN (Windows Host): point browser to `https://192.168.1.1`
 - Diagnostics → Backup & Restore → Download configuration XML.
 - Save this file in your Git repo for reproducibility.
 
----
+
 
 ## 5. Ubuntu Server — VM creation & services (Apache, MariaDB, GLPI, Zabbix)
 
@@ -309,7 +309,7 @@ sudo systemctl enable --now zabbix-server zabbix-agent apache2
 
 **Why Zabbix here?** Zabbix gives centralized monitoring of hosts and services. Hosting it with GLPI is resource-efficient for small labs.
 
----
+
 
 ## 6. Windows Host — network & test configuration
 
@@ -330,7 +330,7 @@ curl http://192.168.1.101  # should return HTML
 ### 6.3 Browser access
 Open `http://192.168.1.101` — the GLPI installer or application should appear. Access Zabbix at `http://192.168.1.101/zabbix`.
 
----
+
 
 ## 7. Firewall rules & security policies (pfSense)
 
@@ -350,7 +350,7 @@ Below is a list of recommended rules to implement on pfSense (Interface: LAN):
 
 **Why:** Principle of least privilege; reduce lateral movement and unexpected exposure.
 
----
+
 
 ## 8. Agents (Zabbix & GLPI) installation and registration
 
@@ -373,7 +373,7 @@ New-NetFirewallRule -DisplayName "Zabbix Agent" -Direction Inbound -Action Allow
 
 **Why agents?** Provide real-time metrics (Zabbix) and asset inventory (GLPI). Agents enable deeper, authenticated data collection.
 
----
+
 
 ## 9. Tests & validation plan
 
@@ -396,7 +396,7 @@ New-NetFirewallRule -DisplayName "Zabbix Agent" -Direction Inbound -Action Allow
 ### Backup test
 - Export GLPI DB and restore to a spare DB to verify backups.
 
----
+
 
 ## 10. Troubleshooting common issues
 
@@ -416,7 +416,7 @@ New-NetFirewallRule -DisplayName "Zabbix Agent" -Direction Inbound -Action Allow
 ### Zabbix agent shows "Not supported"
 - Ensure agent service is running on host and server has correct IP/hostname mapping in Zabbix.
 
----
+
 
 ## 11. Backup, snapshots, and recovery
 
@@ -431,7 +431,6 @@ New-NetFirewallRule -DisplayName "Zabbix Agent" -Direction Inbound -Action Allow
 
 **Recovery test**: Restore DB dumps and web files to a new VM and confirm services start.
 
----
 
 ## 12. Hardening checklist (minimum for a lab intending to model enterprise best practices)
 
@@ -444,7 +443,7 @@ New-NetFirewallRule -DisplayName "Zabbix Agent" -Direction Inbound -Action Allow
 - Monitor logs (Zabbix + local logs) and configure alerts for failures.
 - Regularly export pfSense configuration and DB backups.
 
----
+
 
 ## 13. Automation snippets & useful scripts
 
@@ -473,7 +472,7 @@ network:
         addresses: [8.8.8.8,1.1.1.1]
 ```
 
----
+
 
 ## 14. Appendix: config files & snippets
 
